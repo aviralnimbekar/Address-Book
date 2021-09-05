@@ -13,5 +13,6 @@ public class AddressBook {
         Scanner scanner = new Scanner(System.in);
         ContactCreation contactCreation = new ContactCreation();
         contactCreation.addContact(scanner);
+        contactCreation.editPerson(scanner);
     }
 }

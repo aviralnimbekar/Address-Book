@@ -39,4 +39,61 @@ public class ContactCreation {
             System.out.println(e);
         }
     }
+
+    public void editPerson(Scanner scanner) {
+
+        System.out.println("What do you want to edit \n" +
+                "1. First Name / 2. Last Name / 3. Address / 4. City / 5. State / 6. Zip code / 7. Phone Number / 8. Email");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.println("Enter new First Name");
+                String newFirstName = scanner.next();
+                contactInfo.setFirstName(newFirstName);
+                break;
+
+            case 2:
+                System.out.println("Enter new Last Name");
+                String newLastName = scanner.next();
+                contactInfo.setLastName(newLastName);
+                break;
+
+            case 3:
+                System.out.println("Enter new Address");
+                String newAddress = scanner.next();
+                contactInfo.setAddress(newAddress);
+                break;
+
+            case 4:
+                System.out.println("Enter new City");
+                String newCity = scanner.next();
+                contactInfo.setCity(newCity);
+                break;
+
+            case 5:
+                System.out.println("Enter new State");
+                String newState = scanner.next();
+                contactInfo.setState(newState);
+                break;
+
+            case 6:
+                System.out.println("Enter new Zip code");
+                int newZip = scanner.nextInt();
+                contactInfo.setZip(newZip);
+                break;
+
+            case 7:
+                System.out.println("Enter new Phone Number");
+                long newPhoneNo = scanner.nextLong();
+                contactInfo.setPhoneNo(newPhoneNo);
+                break;
+
+            case 8:
+                System.out.println("Enter new Email");
+                String newEmail = scanner.next();
+                contactInfo.setEmail(newEmail);
+                break;
+        }
+    }
 }
