@@ -14,5 +14,6 @@ public class AddressBook {
         ContactCreation contactCreation = new ContactCreation();
         contactCreation.addContact(scanner);
         contactCreation.editPerson(scanner);
+        contactCreation.deleteContact();
     }
 }
