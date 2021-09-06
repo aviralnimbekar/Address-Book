@@ -1,11 +1,101 @@
 package com.bridgelabz;
 
+import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class ContactCreation {
+    Scanner scanner = new Scanner(System.in);
 
-    public int searchName(Scanner scanner, LinkedList<ContactInfo> contactList) {
+    public void optionToCreateBook() {
+        try {
+            HashMap<String, LinkedList<ContactInfo>> contactBook = new HashMap<>();
+
+            while (true) {
+                System.out.println("\nWhat would you like to do? \n" +
+                        "1. Crate new address book \n" +
+                        "2. Continue with existing address book \n" +
+                        "3. All books \n" +
+                        "0. EXIT");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("Enter name for Address book");
+                        String newBook = scanner.next();
+                        LinkedList<ContactInfo> contactList = new LinkedList<>();
+                        optionToCreateContact(contactList, contactBook, newBook);
+                        break;
+
+                    case 2:
+                        System.out.println(contactBook.keySet());
+                        System.out.println("Which address book do you want to access?");
+                        String existingBook = scanner.next();
+
+                        if (contactBook.containsKey(existingBook)) {
+                            contactList = contactBook.get(existingBook);
+                            optionToCreateContact(contactList, contactBook, existingBook);
+                        } else
+                            System.out.println("Book not found");
+                        break;
+
+                    case 3:
+                        int serialNo = 1;
+                        for (String book : contactBook.keySet()) {
+                            System.out.println(serialNo + ". " + book);
+                            serialNo++;
+                        }
+
+                        System.out.println("\n" + contactBook);
+                        break;
+
+                    default:
+                        System.exit(0);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void optionToCreateContact(LinkedList<ContactInfo> contactList,
+                                       HashMap<String, LinkedList<ContactInfo>> contactBook, String addressBook) {
+        try {
+            boolean run = true;
+            while (run) {
+                System.out.println("\nWhat would u like to do with contacts? \n" +
+                        "1. ADD     \n" +
+                        "2. DISPLAY \n" +
+                        "3. EDIT    \n" +
+                        "4. REMOVE  \n" +
+                        "0. EXIT    \n");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        LinkedList<ContactInfo> multiContactInBook = addContact(contactList);
+                        contactBook.put(addressBook, multiContactInBook);
+                        break;
+                    case 2:
+                        displayContact(contactList);
+                        break;
+                    case 3:
+                        editContact(contactList);
+                        break;
+                    case 4:
+                        deleteContact(contactList);
+                        break;
+                    default:
+                        run = false;
+                }
+            }
+        } catch (InputMismatchException e) {
+            System.out.println(e);
+        }
+    }
+
+    private int searchName(LinkedList<ContactInfo> contactList) {
         try {
             String searchName = scanner.next();
             for (int index = 0; index < contactList.size(); index++) {
@@ -18,7 +108,7 @@ public class ContactCreation {
         return -1;
     }
 
-    public LinkedList<ContactInfo> addContact(Scanner scanner, LinkedList<ContactInfo> contactList) {
+    private LinkedList<ContactInfo> addContact(LinkedList<ContactInfo> contactList) {
         try {
             System.out.println("Enter following details \n" +
                     "First Name :");
@@ -50,22 +140,25 @@ public class ContactCreation {
             contactInfo.setEmail(email);
 
             contactList.add(contactInfo);
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (InputMismatchException e) {
+            System.out.println("Please provide correct data");
         }
         return contactList;
     }
 
-    public void displayContact(LinkedList<ContactInfo> contactList) {
-
-        System.out.println("All contact =  " + contactList.size());
-        System.out.println(contactList);
+    private void displayContact(LinkedList<ContactInfo> contactList) {
+        try {
+            System.out.println("All contact =  " + contactList.size());
+            System.out.println(contactList);
+        } catch (Exception e) {
+            System.out.println("List is Empty");
+        }
     }
 
-    public void editContact(Scanner scanner, LinkedList<ContactInfo> contactList) {
+    private void editContact(LinkedList<ContactInfo> contactList) {
         try {
             System.out.println("Enter a name you want to edit...");
-            int editName = searchName(scanner, contactList);
+            int editName = searchName(contactList);
 
             if (editName == -1)
                 System.out.println("Name not found");
@@ -134,10 +227,10 @@ public class ContactCreation {
         }
     }
 
-    public void deleteContact(Scanner scanner, LinkedList<ContactInfo> contactList) {
+    private void deleteContact(LinkedList<ContactInfo> contactList) {
         try {
             System.out.println("Enter a name you want to delete...");
-            int deleteName = searchName(scanner, contactList);
+            int deleteName = searchName(contactList);
 
             if (deleteName == -1)
                 System.out.println("Name not found");
