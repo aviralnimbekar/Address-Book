@@ -25,7 +25,11 @@ public class ContactCreation {
                         System.out.println("Enter name for Address book");
                         String newBook = scanner.next();
                         LinkedList<ContactInfo> contactList = new LinkedList<>();
-                        optionToCreateContact(contactList, contactBook, newBook);
+
+                        if (contactBook.containsKey(newBook))
+                            System.out.println("Book already exists");
+                        else
+                            optionToCreateContact(contactList, contactBook, newBook);
                         break;
 
                     case 2:
@@ -95,9 +99,8 @@ public class ContactCreation {
         }
     }
 
-    private int searchName(LinkedList<ContactInfo> contactList) {
+    private int searchName(String searchName, LinkedList<ContactInfo> contactList) {
         try {
-            String searchName = scanner.next();
             for (int index = 0; index < contactList.size(); index++) {
                 if (contactList.get(index).getFirstName().equals(searchName))
                     return index;
@@ -113,33 +116,46 @@ public class ContactCreation {
             System.out.println("Enter following details \n" +
                     "First Name :");
             String firstName = scanner.next();
-            System.out.println("Last Name :");
-            String lastName = scanner.next();
-            System.out.println("Address :");
-            String address = scanner.next();
-            System.out.println("City :");
-            String city = scanner.next();
-            System.out.println("State :");
-            String state = scanner.next();
-            System.out.println("Zip Code :");
-            int zip = scanner.nextInt();
-            System.out.println("Phone Number :");
-            long phoneNo = scanner.nextLong();
-            System.out.println("Email :");
-            String email = scanner.next();
 
-            ContactInfo contactInfo = new ContactInfo();
+            int existingName = searchName(firstName, contactList);
+            if (existingName == -1) {
+                ContactInfo contactInfo = new ContactInfo();
 
-            contactInfo.setFirstName(firstName);
-            contactInfo.setLastName(lastName);
-            contactInfo.setAddress(address);
-            contactInfo.setCity(city);
-            contactInfo.setState(state);
-            contactInfo.setZip(zip);
-            contactInfo.setPhoneNo(phoneNo);
-            contactInfo.setEmail(email);
+                contactInfo.setFirstName(firstName);
 
-            contactList.add(contactInfo);
+                System.out.println("Last Name :");
+                String lastName = scanner.next();
+                contactInfo.setLastName(lastName);
+
+                System.out.println("Address :");
+                String address = scanner.next();
+                contactInfo.setAddress(address);
+
+                System.out.println("City :");
+                String city = scanner.next();
+                contactInfo.setCity(city);
+
+                System.out.println("State :");
+                String state = scanner.next();
+                contactInfo.setState(state);
+
+                System.out.println("Zip Code :");
+                int zip = scanner.nextInt();
+                contactInfo.setZip(zip);
+
+                System.out.println("Phone Number :");
+                long phoneNo = scanner.nextLong();
+                contactInfo.setPhoneNo(phoneNo);
+
+                System.out.println("Email :");
+                String email = scanner.next();
+                contactInfo.setEmail(email);
+
+                contactList.add(contactInfo);
+
+            } else
+                System.out.println("Name already exists");
+
         } catch (InputMismatchException e) {
             System.out.println("Please provide correct data");
         }
@@ -158,7 +174,8 @@ public class ContactCreation {
     private void editContact(LinkedList<ContactInfo> contactList) {
         try {
             System.out.println("Enter a name you want to edit...");
-            int editName = searchName(contactList);
+            String searchName = scanner.next();
+            int editName = searchName(searchName, contactList);
 
             if (editName == -1)
                 System.out.println("Name not found");
@@ -220,8 +237,8 @@ public class ContactCreation {
                         contactInfo.setEmail(newEmail);
                         break;
                 }
+                System.out.println("SUCCESSFUL");
             }
-            System.out.println("SUCCESSFUL");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -230,7 +247,8 @@ public class ContactCreation {
     private void deleteContact(LinkedList<ContactInfo> contactList) {
         try {
             System.out.println("Enter a name you want to delete...");
-            int deleteName = searchName(contactList);
+            String searchName = scanner.next();
+            int deleteName = searchName(searchName, contactList);
 
             if (deleteName == -1)
                 System.out.println("Name not found");
