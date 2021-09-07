@@ -13,7 +13,8 @@ public class ContactCreation {
                         "1. Crate new address book \n" +
                         "2. Continue with existing address book \n" +
                         "3. All books \n" +
-                        "4. search location \n" +
+                        "4. Search in location \n" +
+                        "5. Contact number \n" +
                         "0. EXIT");
                 int choice = scanner.nextInt();
 
@@ -54,11 +55,35 @@ public class ContactCreation {
                     case 4:
                         System.out.println("Enter Name for City/State");
                         String nameForLocation = scanner.next();
-                        searchInLocation(nameForLocation);
+                        System.out.println(searchInLocation(nameForLocation));
+                        break;
+
+                    case 5:
+                        System.out.println("Enter First Name");
+                        String nameForContact = scanner.next();
+                        getContactNo(nameForContact);
                         break;
 
                     default:
                         System.exit(0);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void getContactNo(String nameForContact) {
+        try {
+            for (String keyOfBook : contactBook.keySet()) {
+                for (int index = 0; index < contactBook.get(keyOfBook).size(); index++) {
+                    if (contactBook.get(keyOfBook).get(index).getFirstName().equals(nameForContact)) {
+
+                        String lastName = contactBook.get(keyOfBook).get(index).getLastName();
+                        long phoneNo = contactBook.get(keyOfBook).get(index).getPhoneNo();
+
+                        System.out.println(keyOfBook + " : " + nameForContact + " " + lastName + " --> " + phoneNo);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -84,7 +109,6 @@ public class ContactCreation {
                 if (!contactList.isEmpty())
                     searchResult.put(keyOfBook, contactList);
             }
-            System.out.println(searchResult);
             return searchResult;
         } catch (Exception e) {
             System.out.println(e);
