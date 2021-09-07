@@ -1,22 +1,19 @@
 package com.bridgelabz;
 
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class ContactCreation {
     Scanner scanner = new Scanner(System.in);
+    HashMap<String, LinkedList<ContactInfo>> contactBook = new HashMap<>();
 
     public void optionToCreateBook() {
         try {
-            HashMap<String, LinkedList<ContactInfo>> contactBook = new HashMap<>();
-
             while (true) {
                 System.out.println("\nWhat would you like to do? \n" +
                         "1. Crate new address book \n" +
                         "2. Continue with existing address book \n" +
                         "3. All books \n" +
+                        "4. search location \n" +
                         "0. EXIT");
                 int choice = scanner.nextInt();
 
@@ -54,6 +51,12 @@ public class ContactCreation {
                         System.out.println("\n" + contactBook);
                         break;
 
+                    case 4:
+                        System.out.println("Enter Name for City/State");
+                        String nameForLocation = scanner.next();
+                        searchInLocation(nameForLocation);
+                        break;
+
                     default:
                         System.exit(0);
                 }
@@ -61,6 +64,31 @@ public class ContactCreation {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public Hashtable<String, List<String>> searchInLocation(String nameForLocation) {
+        try {
+            Hashtable<String, List<String>> searchResult = new Hashtable<>();
+            List<String> contactList;
+            for (String keyOfBook : contactBook.keySet()) {
+
+                contactList = new ArrayList<>();
+                for (int index = 0; index < contactBook.get(keyOfBook).size(); index++) {
+
+                    if (contactBook.get(keyOfBook).get(index).getCity().equals(nameForLocation))
+                        contactList.add(contactBook.get(keyOfBook).get(index).getFirstName());
+
+                    if (contactBook.get(keyOfBook).get(index).getState().equals(nameForLocation))
+                        contactList.add(contactBook.get(keyOfBook).get(index).getFirstName());
+                }
+                if (!contactList.isEmpty())
+                    searchResult.put(keyOfBook, contactList);
+            }
+            return searchResult;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     private void optionToCreateContact(LinkedList<ContactInfo> contactList,
